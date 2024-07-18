@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS colors;
 DROP DATABASE IF EXISTS colors_dev;
 CREATE DATABASE colors_dev;
 

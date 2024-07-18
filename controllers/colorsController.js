@@ -1,7 +1,7 @@
 // controllers/colorsController.js
 const express = require("express");
 const colors = express.Router();
-const { getAllColors } = require("../queries/color");
+const { getAllColors, getColor, createColor } = require("../queries/color");
 
 // INDEX
 colors.get("/", async (req, res) => {
@@ -11,6 +11,23 @@ colors.get("/", async (req, res) => {
   } else {
     res.status(500).json({ error: "server error" });
   }
+});
+
+// SHOW
+colors.get("/:id", async (request, response) => {
+  const { id } = request.params;
+  const color = await getColor(id);
+  if (color) {
+    response.status(200).json(color);
+  } else {
+    response.status(404).json({ error: "not found" });
+  }
+});
+
+// CREATE
+colors.post("/", async (request, response) => {
+  const color = await createColor(request.body);
+  response.json(color);
 });
 
 module.exports = colors;
