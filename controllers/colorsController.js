@@ -1,8 +1,14 @@
 // controllers/colorsController.js
-const express = require("express");
-const colors = express.Router();
-const { getAllColors, getColor, createColor } = require("../queries/color");
-const { checkName, checkBoolean } = require("../validations/checkColors");
+const express = require("express"); // import the NPM package "express"
+const colors = express.Router(); // Initialize a variable to create a route specific to colors
+const {
+  getAllColors,
+  getColor,
+  createColor,
+  deleteColor,
+  updateColor,
+} = require("../queries/color"); // Importing the functions from the queries directory/color.js file
+const { checkName, checkBoolean } = require("../validations/checkColors"); // Importing the functions from the validations directory/checkColors.js file
 
 // INDEX
 colors.get("/", async (req, res) => {
@@ -29,6 +35,28 @@ colors.get("/:id", async (request, response) => {
 colors.post("/", checkName, checkBoolean, async (request, response) => {
   const color = await createColor(request.body);
   response.json(color);
+});
+
+// DELETE
+colors.delete("/:id", async (request, response) => {
+  const { id } = request.params;
+  const deletedColor = await deleteColor(id);
+  if (deletedColor.id) {
+    response.status(200).json(deletedColor);
+  } else {
+    response.status(404).json("Color not found");
+  }
+});
+
+// UPDATE
+colors.put("/:id", checkName, checkBoolean, async (request, response) => {
+  const { id } = request.params;
+  try {
+    const updatedColor = await updateColor(id, request.body);
+    response.status(200).json(updatedColor);
+  } catch (error) {
+    response.status(404).json({ error: `No colow with the id ${id} exists` });
+  }
 });
 
 module.exports = colors;

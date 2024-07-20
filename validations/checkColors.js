@@ -12,7 +12,7 @@ const checkBoolean = (request, response, next) => {
     request.body.is_favorite === "true" ||
     request.body.is_favorite === "false"
   ) {
-    next();
+    return next();
   } else {
     response.status(400).json({ error: "is_favorite must be a boolean value" });
   }
