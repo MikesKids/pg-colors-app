@@ -1,5 +1,4 @@
-\c colors_prod;
-
+\c colors_prod_epgi;
 INSERT INTO
     colors (name, is_favorite)
 VALUES
